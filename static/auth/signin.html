@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- Define document metadata -->
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>JWT Example</title>
+</head>
+
+<body>
+	<!-- Profile container -->
+	<div id="profile">
+	</div>
+	<!-- Login form -->
+	<div>
+		<!-- Email input -->
+		<input type="email" id="email" placeholder="Email" /><br />
+		<!-- Password input -->
+		<input type="password" id="password" placeholder="Password" /><br />
+		<!-- Login button -->
+		<button id="login">Login</button>
+		<!-- Register link -->
+		<p class="mt-3">Don't have an account?</p>
+		<a href="register.html" class="btn btn-outline-secondary">Register</a>
+	</div>
+	<!-- Load Axios from CDN -->
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<!-- Load users JavaScript -->
+	<script src="/auth/users.js"></script>
+	<!-- Inline JavaScript for login handling -->
+	<script>
+		document.getElementById('login').addEventListener('click', function () {
+			const email = document.getElementById('email').value;
+			const password = document.getElementById('password').value;
+
+			axios.post(`${API_BASE}${LOGIN_ENDPOINT}`, { email, password })
+				.then(response => {
+					localStorage.setItem('token', response.data.jwt);
+					localStorage.setItem('username', email);
+					localStorage.setItem('password', password);
+					window.location.href = REDIRECT_AFTER_LOGIN;
+				})
+				.catch(error => {
+					alert("Login failed. Check your credentials.");
+				});
+		});
+	</script>
+</body>
+
+</html>
